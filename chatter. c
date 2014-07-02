@@ -1,0 +1,10 @@
+#include "userlist.h"
+#include <stdio.h>
+
+User * list;
+int main( int argc, const char* argv[] )
+{
+	list = null;
+	addUser("name", "IP", &list);
+	printf( "\n%s %s\n", list->name, list->IP );
+}

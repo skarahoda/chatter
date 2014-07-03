@@ -22,9 +22,9 @@ void listener()
         recv(c,inbuffer,512,0);
         name = findName(inet_ntoa(client_address.sin_addr));
         if(name != NULL)
-        	printf(">%s: %s>",name, inbuffer);
+        	printf(">>>%s: %s>",name, inbuffer);
         else
-        	printf(">unknown user: %s>", inbuffer);
+        	printf(">>>unknown user: %s>", inbuffer);
         fflush(stdout);
         close(c);
     }

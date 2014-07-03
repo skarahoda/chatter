@@ -3,10 +3,11 @@
 
 
 typedef struct Users{
-	char * name;
-	char * IP;
-	struct User * next;
+	char IP[20];
+	char name[20];
 } User;
 
-void addUser(char * name, char * IP, User ** list);
+char * findUser(char * name);
+char * findName(char * IP);
+void printAll();
 #endif

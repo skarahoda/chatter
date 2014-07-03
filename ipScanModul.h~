@@ -1,0 +1,8 @@
+#ifndef IPSCANMODUL_H_
+#define IPSCANMODUL_H_
+
+
+void *FUNC_THREAD(void *threadid);
+void ipScan();
+
+#endif

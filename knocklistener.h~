@@ -2,4 +2,5 @@
 #define KNOCKLISTENER_H_
 
 void server();
+void error(const char *msg);
 #endif

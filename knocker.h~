@@ -1,0 +1,9 @@
+#ifndef KNOCKER_H_
+#define KNOCKER_H_
+#include "userlist.h"
+
+void IPScan(User ** list, int first, int last);
+
+void testIP();
+
+#endif

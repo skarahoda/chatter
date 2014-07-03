@@ -9,13 +9,7 @@
 #include <netinet/in.h>
 #include <netdb.h> 
 
-void errorMessage(const char *msg)
-{
-	perror(msg);
-	exit(0);
-}
-
-int IPScan(User ** list)
+void IPScan(User ** list, int first, int last)
 {
 	int sockfd, n;
 	struct sockaddr_in serv_addr;
@@ -26,16 +20,17 @@ int IPScan(User ** list)
 	char serverAddress[15];
 	
 	int i;
-	for(i=45;i<255;i++)
+	for(i=first;i<(last+1);i++)
 	{	
-		printf("%d\n",i);
-		
 		//open socket
 		sockfd = socket(AF_INET, SOCK_STREAM, 0);
 		
 		//socket error
 		if (sockfd < 0)
-			errorMessage("ERROR opening socket");
+		{
+			perror("ERROR opening socket");
+			exit(1);
+		}
 		
 		//set the IP address of host
 		sprintf(serverAddress,"192.168.2.%d",i);
@@ -49,11 +44,11 @@ int IPScan(User ** list)
 			//read the username
 			bzero(buffer,256);
 			n = read(sockfd,buffer,255);
-			if (n > 0) 
+			if (n > 0){
 				addUser(buffer, serverAddress, list);
+				printf("%s\t%s\n",serverAddress,buffer);
+			}
 		}
 		close(sockfd);
 	}
-	
-	return 0;
 }

@@ -1,15 +1,55 @@
 #include "userlist.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-void addUser(char * name, char * IP, User ** list)
+
+
+char * findUser(char * name)
 {
-	User * ptr;
-	ptr = malloc(sizeof(User));
-	ptr->name = malloc(50 * sizeof(char));
-	ptr->IP = malloc(50 * sizeof(char));
-	ptr->next = *list;
-	strcpy(ptr->name, name);
-	strcpy(ptr->IP, IP);
-	*list=ptr;
+	FILE * dosya;
+	dosya = fopen("userlist.txt", "r");
+	User temp;
+	while((fscanf(dosya, "%s", temp.IP) != EOF ) && (fscanf(dosya, "%s", temp.name) != EOF))
+	{
+		if(strcmp(temp.name, name) == 0)
+		{
+			char * returnIP =(char *) malloc((strlen(temp.IP)+1) * sizeof(char));
+			strcpy(returnIP, temp.IP);
+			return returnIP;
+		}
+	}
+	fclose(dosya);
+	return NULL;
+}
+
+char * findName(char * IP)
+{
+	FILE * dosya;
+	dosya = fopen("userlist.txt", "r");
+	User temp;
+	while((fscanf(dosya, "%s", temp.IP) != EOF ) && (fscanf(dosya, "%s", temp.name) != EOF))
+	{
+		if(strcmp(temp.IP, IP) == 0)
+		{
+			char * returnName =(char *) malloc((strlen(temp.name)+1) * sizeof(char));
+			strcpy(returnName, temp.name);
+			return returnName;
+		}
+	}
+	fclose(dosya);
+	return NULL;
+}
+
+void printAll()
+{
+	FILE * dosya;
+	dosya = fopen("userlist.txt", "r");
+	User temp;
+	int i=0;
+	while((fscanf(dosya, "%s", temp.IP) != EOF ) && (fscanf(dosya, "%s", temp.name) != EOF))
+	{
+		printf("%d %s\n",++i, temp.name);
+	}
+	fclose(dosya);
 }

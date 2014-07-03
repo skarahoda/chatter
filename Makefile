@@ -13,4 +13,4 @@ ipScanModule: ipScanModule.c ipScanModule.h net.o
 net: net.c net.h
 	gcc -c net.c -o net.o
 clean:
-	rm *.o chatter userlist.txt
+	rm *~ *.o chatter userlist.txt

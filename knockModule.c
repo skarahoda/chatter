@@ -6,7 +6,7 @@ void knock()
     int c;
     int l;
 
-    char myname[] = "emre-sertac";
+    char myname[] = "sertac-emre";
 
     struct sockaddr_in client_address;
     l = sizeof(client_address);

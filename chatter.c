@@ -40,44 +40,62 @@ char * getFullLine(void) {
     return linep;
 }
 
+void printhelp()
+{
+	printf(":s\n\tscan all network to get online users.\n");
+	printf(":l\n\tprint all recorded users on the LAN.\n");
+	printf(":q\n\tterminate the program.\n");
+	printf(":h\n\tenter the help menu.\n");
+	printf("<username> <message>: send one line message to recorded username.\n");
+	
+}
+
 int main( int argc, const char* argv[] )
 {
 
 	pthread_t tID;
-	
 	//process the knocking listener
 	pthread_create(&tID,NULL,(void *)knock,NULL);
 	pthread_create(&tID,NULL,(void *)listener,NULL);
 	
 	//process scaning
 	ipScan();
-	char command[50];
+	char username[50];
+	char temp[50];
 	printf("Welcome\n>");
-	scanf("%s",command);
-	while(strcmp(command,"QUIT") != 0)
+	int c;
+	while(1)
 	{
-		if(strcmp(command, "SCAN") == 0)
+		c = fgetc(stdin);
+		if(c == ':')
 		{
-			ipScan();//Scan
+			c = fgetc(stdin);
+			if(c == 'q')
+				break;//quit
+			else if(c == 's')
+				ipScan();//Scan
+			else if(c == 'h')
+				printhelp();
+			else if(c == 'l')
+				printAll();
+			else
+				printf("There is no such that command\n");
+			c= fgetc(stdin);
 		}
-		else if(strcmp(command, "LIST") == 0)
+		else if(c == '\n')
 		{
-			printAll();
+			//do nothing
 		}
-		else if(strcmp(command, "HELP") == 0)
+		else 
 		{
-			printf("\nSCAN:\n\tscan all network to get online users.\n\n");
-			printf("\nLIST:\n\tprint all recorded users on the LAN.\n\n");
-			printf("\n<username> <message>: send one line message to recorded username.");
-			printf("QUIT:\n\tterminate the program.\n");
-		}
-		else
-		{
+			scanf("%s",temp);
+			username[0] = c;
+			username[1] = 0;
+			strcat(username, temp);
+			char * IP = findUser(username);
 			//find username
-			if(findUser(command) != NULL)
+			if( IP != NULL)
 			{
-				char IP[20]; 
-				strcpy(IP, findUser(command));
 				char * msg = getFullLine();
 				if(msg != NULL)
 					sender(IP, msg);
@@ -86,7 +104,7 @@ int main( int argc, const char* argv[] )
 				printf("404 NOT FOUND\n");
 		}
 		printf(">");
-		scanf("%s",command);
+		
 	};
 	
 	return 0;
